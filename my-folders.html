@@ -486,6 +486,13 @@ new Vue({
             this.categoryForm={name:'',icon:'fa-solid fa-folder'}; 
             this.categoryDialogVisible=true; 
         },
+        sortFolders(ci) {
+            const folders = this.categories[ci].folders;
+            const btn = document.querySelector('[data-a="sf"][data-i="'+ci+'"] i');
+            const isAsc = btn && btn.classList.contains('fa-arrow-down-a-z');
+            folders.sort((a, b) => isAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
+            this.saveData(); this.renderContent();
+        },
         openEditCategoryModal(i) { 
             this.editingCatIdx=i; 
             this.categoryDialogTitle=this.t('edit')+this.t('categoryName'); 

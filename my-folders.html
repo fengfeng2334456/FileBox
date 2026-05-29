@@ -33,6 +33,8 @@
         .category-title{font-size:16px;font-weight:600;color:#303133;flex:1}
         .category-actions{display:flex;gap:6px;opacity:0;transition:opacity .3s}
         .category:hover .category-actions{opacity:1}
+        .btn-sort{width:28px;height:28px;border:none;background:#f5f7fa;border-radius:4px;cursor:pointer;font-size:14px;transition:all .2s;display:flex;align-items:center;justify-content:center;color:#909266}
+        .btn-sort:hover{color:#fff;background:#409EFF}
         .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px}
         .folder-card{cursor:pointer;transition:all .3s;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;padding:20px 12px 16px;background:#fff;border:1px solid #ebeef5;border-radius:8px}
         .folder-card:hover{border-color:#409EFF;box-shadow:0 4px 16px 0 rgba(64,158,255,.15);transform:translateY(-2px)}
@@ -214,7 +216,10 @@ const i18n = {
         imageSizeLimit: '图片大小不能超过2MB',
         needReauthorize: '此文件夹需要重新通过「浏览」按钮选择授权后才能打开。',
         deleteSuccess: '删除成功',
-        saveSuccess: '保存成功'
+        saveSuccess: '保存成功',
+        sortByName: '按名称排序',
+        sortAsc: '升序',
+        sortDesc: '降序'
     },
     en: {
         title: 'My Quick Access Folders',
@@ -254,7 +259,10 @@ const i18n = {
         imageSizeLimit: 'Image size cannot exceed 2MB',
         needReauthorize: 'This folder needs to be re-selected via "Browse" button to open.',
         deleteSuccess: 'Deleted successfully',
-        saveSuccess: 'Saved successfully'
+        saveSuccess: 'Saved successfully',
+        sortByName: 'Sort by name',
+        sortAsc: 'Ascending',
+        sortDesc: 'Descending'
     }
 };
 
@@ -443,7 +451,7 @@ new Vue({
             this.categories.forEach((group,ci) => {
                 const sec = document.createElement('div');
                 sec.className = 'category'; sec.id = 'cat-'+ci;
-                sec.innerHTML = '<div class="category-header"><div class="category-icon"><i class="'+group.icon+'"></i></div><span class="category-title">'+group.category+'</span><div class="category-actions"><button class="btn-icon edit" data-a="ec" data-i="'+ci+'"><i class="fa-solid fa-pen"></i></button><button class="btn-icon del" data-a="dc" data-i="'+ci+'"><i class="fa-solid fa-trash-can"></i></button></div></div>';
+                sec.innerHTML = '<div class="category-header"><div class="category-icon"><i class="'+group.icon+'"></i></div><span class="category-title">'+group.category+'</span><div class="category-actions"><button class="btn-sort" data-a="sf" data-i="'+ci+'" title="'+this.t('sortByName')+'"><i class="fa-solid fa-arrow-down-a-z"></i></button><button class="btn-icon edit" data-a="ec" data-i="'+ci+'"><i class="fa-solid fa-pen"></i></button><button class="btn-icon del" data-a="dc" data-i="'+ci+'"><i class="fa-solid fa-trash-can"></i></button></div></div>';
                 const grid = document.createElement('div'); grid.className = 'grid';
                 group.folders.forEach((f,fi) => {
                     const card = document.createElement('div'); card.className = 'folder-card'; card.title = f.path;
@@ -468,6 +476,7 @@ new Vue({
                     else if(a==='dc') this.confirmDeleteCategory(i);
                     else if(a==='ef') this.openEditFolderModal(c,f);
                     else if(a==='df') this.confirmDeleteFolder(c,f);
+                    else if(a==='sf') this.sortFolders(i);
                 };
             });
         },

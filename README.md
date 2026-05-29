@@ -17,6 +17,7 @@ A clean and elegant local folder quick-access manager. A pure frontend single-fi
 - **Cover Images** — Upload custom images as folder covers with rounded corners
 - **Icon Picker** — 200+ built-in Font Awesome icons to choose from
 - **Sort** — Sort folders by name in ascending/descending order per category
+- **Drag & Drop** — Drag folders between categories to reorganize
 
 ### ✏️ CRUD Operations
 - **Category CRUD** — Add, edit, and delete categories (deleting removes all folders within)
@@ -42,6 +43,7 @@ A clean and elegant local folder quick-access manager. A pure frontend single-fi
 | [Font Awesome](https://fontawesome.com/) 6.x | Icon library |
 | localStorage | Persistent data storage |
 | File System Access API | System folder picker |
+| HTML5 Drag and Drop API | Drag folders between categories |
 
 ---
 
@@ -49,7 +51,7 @@ A clean and elegant local folder quick-access manager. A pure frontend single-fi
 
 ### Option 1: Direct Open (Recommended)
 
-Double-click `my-folders.html` to open it in your browser.
+Double-click `index.html` to open it in your browser.
 
 > ⚠️ Chrome or Edge is recommended for the best experience (full folder picker support).
 
@@ -63,7 +65,21 @@ python -m http.server 8080
 npx serve .
 ```
 
-Then visit `http://localhost:8080/my-folders.html`
+Then visit `http://localhost:8080/index.html`
+
+---
+
+## Project Structure
+
+```
+FileBox/
+├── index.html     # Main HTML entry point
+├── styles.css     # Stylesheet
+├── i18n.js        # Internationalization (Chinese & English)
+├── icons.js       # Font Awesome icon list
+├── data.js        # Default sample data
+└── app.js         # Vue application logic
+```
 
 ---
 
@@ -71,7 +87,7 @@ Then visit `http://localhost:8080/my-folders.html`
 
 ### Managing Categories
 1. Click the **"Add Category"** button at the bottom of the sidebar to create a category
-2. Hover over a category header to reveal the edit (✏️) and delete (🗑️) buttons
+2. Hover over a category header to reveal the sort (A→Z), edit (✏️) and delete (🗑️) buttons
 3. Click a category name in the sidebar to scroll to that section
 
 ### Managing Folders
@@ -79,6 +95,12 @@ Then visit `http://localhost:8080/my-folders.html`
 2. Fill in the name and select a path (click **"Browse"** to use the system picker)
 3. Optionally upload a cover image or select an icon
 4. Hover over a folder card to reveal edit/delete buttons
+
+### Drag & Drop
+- **Drag folders between categories** — Grab a folder card and drag it to another category
+- Visual feedback shows the card becoming translucent while dragging
+- Target category highlights with a green dashed border when hovering
+- Drop to move the folder; changes are saved automatically
 
 ### Sorting
 - Hover over a category header and click the **A→Z** sort button
@@ -99,15 +121,6 @@ All data is persisted in the browser's `localStorage`:
 | `filebox_lang` | Language preference (`zh` / `en`) |
 
 > 💡 Cover images are stored as Base64 strings. Each image is limited to 2MB.
-
----
-
-## Project Structure
-
-```
-FileBox/
-└── my-folders.html    # Single-file app (all HTML/CSS/JS included)
-```
 
 ---
 
